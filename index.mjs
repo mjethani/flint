@@ -31,6 +31,9 @@ async function flint(filename) {
 
   for (let line of content.split('\n')) {
     for (let { pattern, type, message } of rules) {
+      if (type === 'off')
+        continue;
+
       let re = new RegExp(pattern);
       let match = re.exec(line);
       if (match !== null) {
