@@ -1,9 +1,11 @@
 {
   "name": "flint-tool",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A linter for EasyList-style filters",
   "main": "index.mjs",
-  "bin": "flint",
+  "bin": {
+    "flint": "flint"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mjethani/flint.git"
