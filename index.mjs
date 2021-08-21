@@ -48,7 +48,16 @@ async function flint(filename) {
   return returnCode;
 }
 
+function printVersion() {
+  let { version } = createRequire(import.meta.url)('./package.json');
+
+  console.log(`v${version}`);
+}
+
 export async function main() {
+  if (process.argv[2] === '--version')
+    return printVersion();
+
   let exitCode = 0;
 
   for (let filename of process.argv.slice(2))

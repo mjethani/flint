@@ -9,6 +9,7 @@ npm i -g flint-tool
 ### Usage
 
 ```
+flint --version
 flint easylist.txt
 ```
 
