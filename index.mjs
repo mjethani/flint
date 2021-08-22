@@ -40,7 +40,7 @@ async function flint(filename) {
         if (type === 'error')
           returnCode = 1;
 
-        console.log(`${chalk.grey(filename)}:${lineNumber}: ${type === 'warning' ? chalk.yellow('WARNING') : chalk.red('ERROR')}: ${chalk.bold(message)}`);
+        console.log(`${chalk.grey(filename)}:${lineNumber}: ${type === 'warning' ? chalk.yellow('WARNING') : chalk.red('ERROR')}: ${message}`);
         console.log();
         console.log(line);
         console.log();
