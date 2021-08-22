@@ -22,6 +22,8 @@ import chalk from 'chalk';
 
 import rules from './rules.mjs';
 
+let quietMode = false;
+
 async function flint(filename) {
   let returnCode = 0;
 
@@ -40,10 +42,12 @@ async function flint(filename) {
         if (type === 'error')
           returnCode = 1;
 
-        console.log(`${chalk.grey(filename)}:${lineNumber}: ${type === 'warning' ? chalk.yellow('WARNING') : chalk.red('ERROR')}: ${message}`);
-        console.log();
-        console.log(line);
-        console.log();
+        if (!quietMode) {
+          console.log(`${chalk.grey(filename)}:${lineNumber}: ${type === 'warning' ? chalk.yellow('WARNING') : chalk.red('ERROR')}: ${message}`);
+          console.log();
+          console.log(line);
+          console.log();
+        }
       }
     }
 
@@ -59,17 +63,24 @@ function printVersion() {
   console.log(`v${version}`);
 }
 
-export async function main() {
-  let args = process.argv.slice(2);
-
+function parseArgs(args) {
   let filenames = args.filter(arg => !arg.startsWith('--'));
   let options = args.filter(arg => arg.startsWith('--'));
+
+  return { filenames, options };
+}
+
+export async function main() {
+  let { filenames, options } = parseArgs(process.argv.slice(2));
 
   if (options.includes('--version'))
     return printVersion();
 
   if (options.includes('--no-color'))
     chalk.level = 0;
+
+  if (options.includes('--quiet'))
+    quietMode = true;
 
   let exitCode = 0;
 
