@@ -60,12 +60,20 @@ function printVersion() {
 }
 
 export async function main() {
-  if (process.argv[2] === '--version')
+  let args = process.argv.slice(2);
+
+  let filenames = args.filter(arg => !arg.startsWith('--'));
+  let options = args.filter(arg => arg.startsWith('--'));
+
+  if (options.includes('--version'))
     return printVersion();
+
+  if (options.includes('--no-color'))
+    chalk.level = 0;
 
   let exitCode = 0;
 
-  for (let filename of process.argv.slice(2))
+  for (let filename of filenames)
     exitCode |= await flint(filename);
 
   process.exit(exitCode);
