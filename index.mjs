@@ -23,6 +23,7 @@ import chalk from 'chalk';
 import rules from './rules.mjs';
 
 let quietMode = false;
+let compactMode = false;
 
 function formatMatch(match, filename, lineNumber, type, message) {
   filename = chalk.grey(filename);
@@ -60,9 +61,12 @@ async function flint(filename) {
 
         if (!quietMode) {
           console.log(formatMatch(match, filename, lineNumber, type, message));
-          console.log();
-          console.log(line);
-          console.log();
+
+          if (!compactMode) {
+            console.log();
+            console.log(line);
+            console.log();
+          }
         }
       }
     }
@@ -97,6 +101,9 @@ export async function main() {
 
   if (options.includes('--quiet'))
     quietMode = true;
+
+  if (options.includes('--compact'))
+    compactMode = true;
 
   let exitCode = 0;
 
