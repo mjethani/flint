@@ -51,6 +51,13 @@ export default [
     message: 'Single-character filter'
   },
   {
+    // If it looks like a host, it should be surrounded by anchors; otherwise,
+    // the interpretation is ambiguous.
+    pattern: /^\s*([a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*(:\d+)?)\s*$/i,
+    type: 'error',
+    message: '{1} looks like a host'
+  },
+  {
     pattern: {
       exec(line) {
         let domains = parseCosmeticFilterDomains(line) || [];
