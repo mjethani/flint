@@ -32,4 +32,9 @@ export default [
     type: 'warning',
     message: 'Leading asterisk'
   },
+  {
+    pattern: '^[^!\\s]$',
+    type: 'error',
+    message: 'Single-character filter'
+  },
 ];
