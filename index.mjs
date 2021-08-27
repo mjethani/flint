@@ -24,6 +24,23 @@ import rules from './rules.mjs';
 
 let quietMode = false;
 
+function formatMatch(match, filename, lineNumber, type, message) {
+  filename = chalk.grey(filename);
+  type = type === 'warning' ? chalk.yellow('WARNING') : chalk.red('ERROR');
+
+  for (let i = 0; i < match.length; i++) {
+    let replacement = match[i];
+    if (typeof replacement !== 'undefined') {
+      message = message.replace(`{${i}}`,
+                                /^\s*$/.test(replacement) ?
+                                  `'${replacement}'` :
+                                  chalk.bold(replacement.trim()));
+    }
+  }
+
+  return `${filename}:${lineNumber}: ${type}: ${message}`;
+}
+
 async function flint(filename) {
   let returnCode = 0;
 
@@ -42,7 +59,7 @@ async function flint(filename) {
           returnCode = 1;
 
         if (!quietMode) {
-          console.log(`${chalk.grey(filename)}:${lineNumber}: ${type === 'warning' ? chalk.yellow('WARNING') : chalk.red('ERROR')}: ${message}`);
+          console.log(formatMatch(match, filename, lineNumber, type, message));
           console.log();
           console.log(line);
           console.log();

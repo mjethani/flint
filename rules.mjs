@@ -61,6 +61,20 @@ export default [
       }
     },
     type: 'error',
-    message: 'Blank domain in cosmetic filter'
+    message: 'Blank domain'
+  },
+  {
+    pattern: {
+      exec(line) {
+        let domains = parseCosmeticFilterDomains(line) || [];
+        let domain = domains.find(domain => /\s/.test(domain));
+        if (typeof domain !== 'undefined')
+          return [ line, domain ];
+
+        return null;
+      }
+    },
+    type: 'error',
+    message: 'Domain {1} contains whitespace'
   },
 ];
