@@ -15,6 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+function parseCosmeticFilterDomains(line) {
+  line = line.trim();
+
+  if (line[0] === '!')
+    return null;
+
+  let [ , domains ] = /^([^/|@"!]*?)#[@?$]?#.+/.exec(line) || [];
+  if (typeof domains === 'undefined' || domains === '')
+    return null;
+
+  return domains.split(',');
+}
+
 export default [
   {
     pattern: /^\s+/,
@@ -36,5 +49,18 @@ export default [
     pattern: /^\s*[^!\s]\s*$/,
     type: 'error',
     message: 'Single-character filter'
+  },
+  {
+    pattern: {
+      exec(line) {
+        let domains = parseCosmeticFilterDomains(line) || [];
+        if (domains.some(domain => /^\s*$/.test(domain)))
+          return [ line ];
+
+        return null;
+      }
+    },
+    type: 'error',
+    message: 'Blank domain in cosmetic filter'
   },
 ];
