@@ -27,4 +27,9 @@ export default [
     type: 'warning',
     message: 'Trailing whitespace'
   },
+  {
+    pattern: '^\\*',
+    type: 'warning',
+    message: 'Leading asterisk'
+  },
 ];
