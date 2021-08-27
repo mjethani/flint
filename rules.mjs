@@ -28,12 +28,12 @@ export default [
     message: 'Trailing whitespace'
   },
   {
-    pattern: /^\*/,
+    pattern: /^\s*\*/,
     type: 'warning',
     message: 'Leading asterisk'
   },
   {
-    pattern: /^[^!\s]$/,
+    pattern: /^\s*[^!\s]\s*$/,
     type: 'error',
     message: 'Single-character filter'
   },
