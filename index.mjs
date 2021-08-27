@@ -36,8 +36,7 @@ async function flint(filename) {
       if (type === 'off')
         continue;
 
-      let re = new RegExp(pattern);
-      let match = re.exec(line);
+      let match = pattern.exec(line);
       if (match !== null) {
         if (type === 'error')
           returnCode = 1;

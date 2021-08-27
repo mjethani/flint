@@ -17,23 +17,23 @@
 
 export default [
   {
-    pattern: '^\\s+',
+    pattern: /^\s+/,
     type: 'warning',
     message: 'Leading whitespace'
   },
   {
     // Trailing whitespace is OK in comments.
-    pattern: '^\\s*[^!].*\\s+$',
+    pattern: /^\s*[^!].*\s+$/,
     type: 'warning',
     message: 'Trailing whitespace'
   },
   {
-    pattern: '^\\*',
+    pattern: /^\*/,
     type: 'warning',
     message: 'Leading asterisk'
   },
   {
-    pattern: '^[^!\\s]$',
+    pattern: /^[^!\s]$/,
     type: 'error',
     message: 'Single-character filter'
   },
