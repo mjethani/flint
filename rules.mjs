@@ -84,4 +84,23 @@ export default [
     type: 'error',
     message: 'Domain {1} contains whitespace'
   },
+  {
+    // Domain names must be IDNA-encoded.
+    // https://en.wikipedia.org/wiki/Punycode
+    pattern: {
+      exec(line) {
+        let domains = parseCosmeticFilterDomains(line) || [];
+        for (let domain of domains) {
+          let actualDomain = domain.trim().replace(/^~/, '');
+          let [ , character ] = /([^a-z0-9.\s-])/iu.exec(actualDomain) || [];
+          if (typeof character !== 'undefined')
+            return [ line, domain, character ];
+        }
+
+        return null;
+      }
+    },
+    type: 'error',
+    message: 'Domain {1} contains non-hostname character {2}'
+  },
 ];
