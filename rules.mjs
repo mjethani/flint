@@ -15,17 +15,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-function parseCosmeticFilterDomains(line) {
+function extractDomains(line) {
   line = line.trim();
 
   if (line[0] === '!')
     return null;
 
+  // Cosmetic filter domains.
   let [ , domains ] = /^([^/|@"!]*?)#[@?$]?#.+/.exec(line) || [];
-  if (typeof domains === 'undefined' || domains === '')
-    return null;
+  if (typeof domains !== 'undefined')
+    return domains !== '' ? domains.split(',') : null;
 
-  return domains.split(',');
+  // Network filter domains.
+  let [ options ] = /\$\s*~?[\s\w-]+(?:=[^,]*)?(?:\s*,\s*~?[\s\w-]+(?:=[^,]*)?)*$/.exec(line) || [];
+  if (typeof options !== 'undefined') {
+    for (let option of options.substring(1).split(',')) {
+      let [ , name, value ] = /^\s*(~?[\s\w-]+)(?:=([^,]*))?/.exec(option);
+      if (name.replace(/\s/g, '') === 'domain' && typeof value !== 'undefined')
+        return value.split('|');
+    }
+  }
+
+  return null;
 }
 
 export default [
@@ -60,7 +71,7 @@ export default [
   {
     pattern: {
       exec(line) {
-        let domains = parseCosmeticFilterDomains(line) || [];
+        let domains = extractDomains(line) || [];
         if (domains.some(domain => /^\s*~?\s*$/.test(domain)))
           return [ line ];
 
@@ -73,7 +84,7 @@ export default [
   {
     pattern: {
       exec(line) {
-        let domains = parseCosmeticFilterDomains(line) || [];
+        let domains = extractDomains(line) || [];
         let domain = domains.find(domain => /\s/.test(domain));
         if (typeof domain !== 'undefined')
           return [ line, domain ];
@@ -89,7 +100,7 @@ export default [
     // https://en.wikipedia.org/wiki/Punycode
     pattern: {
       exec(line) {
-        let domains = parseCosmeticFilterDomains(line) || [];
+        let domains = extractDomains(line) || [];
         for (let domain of domains) {
           let actualDomain = domain.trim().replace(/^~/, '');
           let [ , character ] = /([^a-z0-9.\s-])/iu.exec(actualDomain) || [];
