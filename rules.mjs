@@ -15,6 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+function extractOptions(line) {
+  line = line.trim();
+
+  if (line[0] === '!')
+    return null;
+
+  if (/^[^/|@"!]*?#[@?$]?#.+/.test(line))
+    return null;
+
+  let [ options ] = /\$\s*~?[\s\w-]+(?:=[^,]*)?(?:\s*,\s*~?[\s\w-]+(?:=[^,]*)?)*$/.exec(line) || [];
+  if (typeof options === 'undefined')
+    return null;
+
+  let entries = [];
+
+  for (let option of options.substring(1).split(',')) {
+    let [ , name, value ] = /^\s*(~?[\s\w-]+)(?:=([^,]*))?/.exec(option);
+    entries.push([ name, value ]);
+  }
+
+  return entries;
+}
+
 function extractDomains(line) {
   line = line.trim();
 
@@ -113,5 +136,50 @@ export default [
     },
     type: 'error',
     message: 'Domain {1} contains non-hostname character {2}'
+  },
+  {
+    pattern: {
+      exec(line) {
+        let validOptions = [
+          'other', '~other',
+          'script', '~script',
+          'image', '~image',
+          'stylesheet', '~stylesheet',
+          'object', '~object',
+          'subdocument', '~subdocument',
+          'websocket', '~websocket',
+          'webrtc', '~webrtc',
+          'ping', '~ping',
+          'xmlhttprequest', '~xmlhttprequest',
+          'media', '~media',
+          'font', '~font',
+
+          'popup',
+          'csp',
+          'rewrite',
+
+          'document',
+          'genericblock',
+          'elemhide',
+          'generichide',
+
+          'domain',
+          'third-party', '~third-party',
+          'match-case', '~match-case',
+        ];
+
+        let options = extractOptions(line);
+        if (options !== null) {
+          for (let [ name ] of options) {
+            if (!validOptions.includes(name.replace(/\s/g, '')))
+              return [ line, name ];
+          }
+        }
+
+        return null;
+      }
+    },
+    type: 'error',
+    message: 'Invalid option {1}'
   },
 ];
