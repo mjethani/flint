@@ -61,7 +61,7 @@ export default [
     pattern: {
       exec(line) {
         let domains = parseCosmeticFilterDomains(line) || [];
-        if (domains.some(domain => /^\s*$/.test(domain)))
+        if (domains.some(domain => /^\s*~?\s*$/.test(domain)))
           return [ line ];
 
         return null;
