@@ -85,6 +85,21 @@ function printVersion() {
   console.log(`v${version}`);
 }
 
+function printRules() {
+  for (let { pattern, type, message } of rules) {
+    pattern = pattern instanceof RegExp ?
+                chalk.green('expression') :
+                chalk.blue('function');
+    type = type === 'warning' ?
+             chalk.yellow('warning') :
+             type === 'off' ?
+               chalk.grey('off') :
+               chalk.red('error');
+
+    console.log(`${pattern}\t${type}\t${message}`);
+  }
+}
+
 function parseArgs(args) {
   let filenames = args.filter(arg => !arg.startsWith('--'));
   let options = args.filter(arg => arg.startsWith('--'));
@@ -95,9 +110,6 @@ function parseArgs(args) {
 export async function main() {
   let { filenames, options } = parseArgs(process.argv.slice(2));
 
-  if (options.includes('--version'))
-    return printVersion();
-
   if (options.includes('--no-color'))
     chalk.level = 0;
 
@@ -106,6 +118,12 @@ export async function main() {
 
   if (options.includes('--compact'))
     compactMode = true;
+
+  if (options.includes('--version'))
+    return printVersion();
+
+  if (options.includes('--list-rules'))
+    return printRules();
 
   let exitCode = 0;
 
