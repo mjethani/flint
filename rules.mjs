@@ -171,7 +171,7 @@ export default [
         let options = extractOptions(line);
         if (options !== null) {
           for (let [ name ] of options) {
-            if (!validOptions.includes(name.replace(/\s/g, '')))
+            if (!validOptions.includes(name.replace(/\s/g, '').toLowerCase()))
               return [ line, name ];
           }
         }
@@ -181,5 +181,23 @@ export default [
     },
     type: 'error',
     message: 'Invalid option {1}'
+  },
+  {
+    pattern: {
+      exec(line) {
+        let options = extractOptions(line);
+        if (options !== null) {
+          for (let [ name ] of options) {
+            name = name.replace(/\s/g, '');
+            if (name !== name.toLowerCase())
+              return [ line, name ];
+          }
+        }
+
+        return null;
+      }
+    },
+    type: 'warning',
+    message: 'Mixed-case option {1}'
   },
 ];
