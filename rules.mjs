@@ -15,6 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+function extractPattern(line) {
+  line = line.trim();
+
+  if (line === '' || line[0] === '!')
+    return null;
+
+  if (/^[^/|@"!]*?#[@?$]?#.+/.test(line))
+    return null;
+
+  if (line.startsWith('@@'))
+    line = line.substring(2);
+
+  let [ options ] = /\$\s*~?[\s\w-]+(?:=[^,]*)?(?:\s*,\s*~?[\s\w-]+(?:=[^,]*)?)*$/.exec(line) || [];
+  if (typeof options !== 'undefined')
+    return line.slice(0, -options.length);
+
+  return line;
+}
+
 function extractOptions(line) {
   line = line.trim();
 
@@ -216,5 +235,22 @@ export default [
     },
     type: 'warning',
     message: 'Option {1} contains whitespace'
+  },
+  {
+    pattern: {
+      exec(line) {
+        let urlPattern = extractPattern(line);
+        if (urlPattern !== null) {
+          urlPattern = urlPattern.trim();
+
+          if (urlPattern !== '' && urlPattern.length < 3)
+            return [ line, urlPattern ];
+        }
+
+        return null;
+      }
+    },
+    type: 'error',
+    message: 'URL pattern {1} is too short'
   },
 ];
