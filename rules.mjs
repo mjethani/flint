@@ -200,4 +200,21 @@ export default [
     type: 'warning',
     message: 'Mixed-case option {1}'
   },
+  {
+    pattern: {
+      exec(line) {
+        let options = extractOptions(line);
+        if (options !== null) {
+          for (let [ name ] of options) {
+            if (/\s/.test(name))
+              return [ line, name ];
+          }
+        }
+
+        return null;
+      }
+    },
+    type: 'warning',
+    message: 'Option {1} contains whitespace'
+  },
 ];
