@@ -233,7 +233,7 @@ export default [
         return null;
       }
     },
-    type: 'warning',
+    type: 'error',
     message: 'Option {1} contains whitespace'
   },
   {
