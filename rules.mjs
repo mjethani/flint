@@ -29,7 +29,7 @@ function extractPattern(line) {
 
   let [ options ] = /\$\s*~?[\s\w-]+(?:=[^,]*)?(?:\s*,\s*~?[\s\w-]+(?:=[^,]*)?)*$/.exec(line) || [];
   if (typeof options !== 'undefined')
-    return line.slice(0, -options.length);
+    return line.slice(0, -options.length).trim();
 
   return line;
 }
@@ -252,5 +252,18 @@ export default [
     },
     type: 'error',
     message: 'URL pattern {1} is too short'
+  },
+  {
+    pattern: {
+      exec(line) {
+        let urlPattern = extractPattern(line);
+        if (urlPattern !== null && /\s/.test(urlPattern))
+          return [ line, urlPattern ];
+
+        return null;
+      }
+    },
+    type: 'error',
+    message: 'URL pattern {1} contains whitespace'
   },
 ];

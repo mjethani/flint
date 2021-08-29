@@ -47,6 +47,8 @@ async function flint(filename) {
 
   let content = await readFile(filename, 'utf8');
 
+  content = content.replace(/^\[Adblock Plus \d+\.\d+\]\r?\n/, '');
+
   let lineNumber = 1;
 
   for (let line of content.split('\n')) {
