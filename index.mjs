@@ -24,6 +24,7 @@ import rules from './rules.mjs';
 
 let quietMode = false;
 let compactMode = false;
+let errorsOnlyMode = false;
 
 function formatMatch(match, filename, lineNumber, type, message) {
   filename = chalk.grey(filename);
@@ -53,7 +54,7 @@ async function flint(filename) {
 
   for (let line of content.split(/\r?\n/g)) {
     for (let { pattern, type, message } of rules) {
-      if (type === 'off')
+      if (type === 'off' || (errorsOnlyMode && type !== 'error'))
         continue;
 
       let match = pattern.exec(line);
@@ -118,6 +119,9 @@ export async function main() {
 
   if (options.includes('--compact'))
     compactMode = true;
+
+  if (options.includes('--errors-only'))
+    errorsOnlyMode = true;
 
   if (options.includes('--version'))
     return printVersion();
