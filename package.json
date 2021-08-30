@@ -6,6 +6,9 @@
   "bin": {
     "flint": "flint"
   },
+  "scripts": {
+    "fetch-lists": "node scripts/fetch-lists.mjs"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mjethani/flint.git"
