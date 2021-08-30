@@ -99,6 +99,11 @@ function openHTML() {
   grey = s => h`<span style="color: grey">${s}</span>`;
   bold = s => h`<b>${s}</b>`;
 
+  let date = new Date();
+
+  date.setMilliseconds(0);
+  date.setSeconds(0);
+
   console.log('<!DOCTYPE html>');
   console.log('<html>');
   console.log(' <head>');
@@ -107,6 +112,7 @@ function openHTML() {
   console.log(`  <meta name="generator" content="flint v${version}">`);
   console.log(' </head>');
   console.log(' <body style="background: #232323; color: white; font-size: 150%; font-family: sans-serif; margin: 2em">');
+  console.log(`  <time style="color: grey" datetime="${date.toISOString()}">${date.toUTCString()}</time>`);
   console.log('  <h1>flint report</h1>');
   console.log('  <pre>');
 }
