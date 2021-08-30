@@ -19,6 +19,11 @@ import fs from 'fs';
 import http from 'http';
 import https from 'https';
 
+import { createRequire } from 'module';
+
+let require = createRequire(import.meta.url);
+let subscriptions = require('adblockpluscore/data/subscriptions.json');
+
 function read(message) {
   return new Promise(resolve => {
     let content = '';
@@ -62,19 +67,11 @@ function download(url) {
 
   fs.mkdirSync(directory, { recursive: true });
 
-  let api = 'https://filterlists.com/api/directory';
-  let lists = JSON.parse(await download(`${api}/lists`));
-
-  // Filter for Adblock Plus syntax.
-  lists = lists.filter(({ syntaxIds }) => syntaxIds.length === 1 &&
-                                          syntaxIds.includes(3));
-  for (let { id } of lists) {
-    let [ { url } ] = JSON.parse(await download(`${api}/lists/${id}`)).viewUrls;
-
-    console.log(`Downloading ${id}: ${url}`);
+  for (let { url } of subscriptions) {
+    console.log(`Downloading ${url}`);
 
     try {
-      fs.writeFileSync(new URL(`${id}.txt`, `${directory}/`),
+      fs.writeFileSync(new URL(`${url.replace(/.*\/([^/]+)$/, '$1')}`, `${directory}/`),
                        await download(url));
     } catch (error) {
       console.error(error);

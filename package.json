@@ -29,5 +29,8 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "adblockpluscore": "0.3.1"
   }
 }
