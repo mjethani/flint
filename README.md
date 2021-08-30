@@ -24,6 +24,10 @@ npm run fetch-lists
 ./flint lists/*.txt
 ```
 
+### Report
+
+https://manishjethani.io/flint/report.html
+
 ---
 
 &copy; 2021 Manish Jethani
