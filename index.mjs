@@ -22,13 +22,20 @@ import chalk from 'chalk';
 
 import rules from './rules.mjs';
 
+let green = chalk.green;
+let blue = chalk.blue;
+let yellow = chalk.yellow;
+let red = chalk.red;
+let grey = chalk.grey;
+let bold = chalk.bold;
+
 let quietMode = false;
 let compactMode = false;
 let errorsOnlyMode = false;
 
 function formatMatch(match, filename, lineNumber, type, message) {
-  filename = chalk.grey(filename);
-  type = type === 'warning' ? chalk.yellow('WARNING') : chalk.red('ERROR');
+  filename = grey(filename);
+  type = type === 'warning' ? yellow('WARNING') : red('ERROR');
 
   for (let i = 0; i < match.length; i++) {
     let replacement = match[i];
@@ -36,7 +43,7 @@ function formatMatch(match, filename, lineNumber, type, message) {
       message = message.replace(`{${i}}`,
                                 /^\s*$/.test(replacement) ?
                                   `'${replacement}'` :
-                                  chalk.bold(replacement.trim()));
+                                  bold(replacement.trim()));
     }
   }
 
@@ -80,6 +87,36 @@ async function flint(filename) {
   return returnCode;
 }
 
+function openHTML() {
+  let { version } = createRequire(import.meta.url)('./package.json');
+
+  let h = ([ b, a ], r) => `${b}${r.replace(/&/g, '&amp;').replace(/</g, '&lt;')}${a}`;
+
+  green = s => h`<span style="color: green">${s}</span>`;
+  blue = s => h`<span style="color: blue">${s}</span>`;
+  yellow = s => h`<span style="color: yellow">${s}</span>`;
+  red = s => h`<span style="color: red">${s}</span>`;
+  grey = s => h`<span style="color: grey">${s}</span>`;
+  bold = s => h`<b>${s}</b>`;
+
+  console.log('<!DOCTYPE html>');
+  console.log('<html>');
+  console.log(' <head>');
+  console.log('  <meta charset="utf-8">');
+  console.log('  <meta name="viewport" content="width=device-width, initial-scale=1">');
+  console.log(`  <meta name="generator" content="flint v${version}">`);
+  console.log(' </head>');
+  console.log(' <body style="background: #232323; color: white; font-size: 150%; font-family: sans-serif; margin: 2em">');
+  console.log('  <h1>flint report</h1>');
+  console.log('  <pre>');
+}
+
+function closeHTML() {
+  console.log('  </pre>');
+  console.log(' </body>');
+  console.log('</html>');
+}
+
 function printVersion() {
   let { version } = createRequire(import.meta.url)('./package.json');
 
@@ -89,13 +126,13 @@ function printVersion() {
 function printRules() {
   for (let { pattern, type, message } of rules) {
     pattern = pattern instanceof RegExp ?
-                chalk.green('expression') :
-                chalk.blue('function');
+                green('expression') :
+                blue('function');
     type = type === 'warning' ?
-             chalk.yellow('warning') :
+             yellow('warning') :
              type === 'off' ?
-               chalk.grey('off') :
-               chalk.red('error');
+               grey('off') :
+               red('error');
 
     console.log(`${pattern}\t${type}\t${message}`);
   }
@@ -131,8 +168,14 @@ export async function main() {
 
   let exitCode = 0;
 
+  if (options.includes('--html'))
+    openHTML();
+
   for (let filename of filenames)
     exitCode |= await flint(filename);
+
+  if (options.includes('--html'))
+    closeHTML();
 
   process.exit(exitCode);
 }
