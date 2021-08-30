@@ -95,7 +95,7 @@ export default [
   },
   {
     pattern: /^\s*\*/,
-    type: 'warning',
+    type: 'off',
     message: 'Leading asterisk'
   },
   {
