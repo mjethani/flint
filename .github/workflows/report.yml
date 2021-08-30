@@ -3,6 +3,7 @@ name: Report
 on:
   push:
     branches: [ main ]
+
   schedule:
     - cron: '0 */4 * * *'
 
@@ -13,6 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Use Node.js 14
       uses: actions/setup-node@v2
       with:
@@ -20,15 +22,18 @@ jobs:
         cache: 'npm'
     - name: Install dependencies
       run: npm install
+
     - name: Fetch lists
       run: npm run fetch-lists -- --force
+
     - run: mkdir -p dist
+
     - name: Run flint
       working-directory: lists
       run: node ../flint --html *.txt > ../dist/report.html || true
+
     - name: Publish report
       uses: peaceiris/actions-gh-pages@v3
-      if: ${{ github.ref == 'refs/heads/main' }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist
