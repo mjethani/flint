@@ -51,7 +51,7 @@ async function flint(filename) {
 
   let lineNumber = 1;
 
-  for (let line of content.split('\n')) {
+  for (let line of content.split(/\r?\n/g)) {
     for (let { pattern, type, message } of rules) {
       if (type === 'off')
         continue;
