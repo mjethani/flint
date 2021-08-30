@@ -108,7 +108,6 @@ function openHTML() {
   console.log('<html>');
   console.log(' <head>');
   console.log('  <meta charset="utf-8">');
-  console.log('  <meta name="viewport" content="width=device-width, initial-scale=1">');
   console.log(`  <meta name="generator" content="flint v${version}">`);
   console.log(' </head>');
   console.log(' <body style="background: #232323; color: white; font-size: 150%; font-family: sans-serif; margin: 2em">');
