@@ -67,11 +67,18 @@ function download(url) {
 
   fs.mkdirSync(directory, { recursive: true });
 
+  let lists = process.argv.slice(2).filter(arg => !arg.startsWith('--'));
+
   for (let { url } of subscriptions) {
+    let filename = url.replace(/.*\/([^/]+)$/, '$1');
+
+    if (lists.length > 0 && !lists.includes(filename))
+      continue;
+
     console.log(`Downloading ${url}`);
 
     try {
-      fs.writeFileSync(new URL(`${url.replace(/.*\/([^/]+)$/, '$1')}`, `${directory}/`),
+      fs.writeFileSync(new URL(`${filename}`, `${directory}/`),
                        await download(url));
     } catch (error) {
       console.error(error);
