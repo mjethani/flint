@@ -1,4 +1,5 @@
 .github/
 *.txt
+!help.txt
 scripts/
 lists/

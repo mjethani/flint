@@ -1,0 +1,25 @@
+usage: flint --version
+       flint --help
+       flint [--no-colors] [--compact] [--errors-only] [--zero-errors]
+             [--html] [file ...]
+
+  --version
+      Show version number
+
+  --help
+      Show help
+
+  --no-color
+      Turn off color output
+
+  --compact
+      Use compact output format
+
+  --errors-only
+      Lint with error rules only
+
+  --zero-errors
+      Exit with success code even if there are lint errors
+
+  --html
+      Print HTML instead of plain text

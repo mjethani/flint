@@ -129,6 +129,10 @@ function printVersion() {
   console.log(`v${version}`);
 }
 
+async function printHelp() {
+  console.log(await readFile(new URL('help.txt', import.meta.url), 'utf8'));
+}
+
 function printRules() {
   for (let { pattern, type, message } of rules) {
     pattern = pattern instanceof RegExp ?
@@ -168,6 +172,9 @@ export async function main() {
 
   if (options.includes('--version'))
     return printVersion();
+
+  if (options.includes('--help'))
+    return printHelp();
 
   if (options.includes('--list-rules'))
     return printRules();
