@@ -250,7 +250,7 @@ export default [
         return null;
       }
     },
-    type: 'error',
+    type: 'off',
     message: 'URL pattern {1} is too short'
   },
   {
