@@ -1,6 +1,6 @@
 {
   "name": "flint-tool",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "A linter for EasyList-style filters",
   "main": "index.mjs",
   "bin": {
