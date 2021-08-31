@@ -1,5 +1,7 @@
 # flint: A linter for EasyList-style filters
 
+[![EasyList](https://github.com/mjethani/flint/actions/workflows/easylist.yml/badge.svg)](https://github.com/mjethani/flint/actions/workflows/easylist.yml)
+
 ### Installation
 
 ```
