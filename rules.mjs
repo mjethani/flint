@@ -185,6 +185,8 @@ export default [
           'domain',
           'third-party', '~third-party',
           'match-case', '~match-case',
+
+          'header',
         ];
 
         let options = extractOptions(line);
@@ -200,6 +202,27 @@ export default [
     },
     type: 'error',
     message: 'Invalid option {1}'
+  },
+  {
+    pattern: {
+      exec(line) {
+        let experimentalOptions = [
+          'header',
+        ];
+
+        let options = extractOptions(line);
+        if (options !== null) {
+          for (let [ name ] of options) {
+            if (experimentalOptions.includes(name.replace(/\s/g, '').toLowerCase()))
+              return [ line, name ];
+          }
+        }
+
+        return null;
+      }
+    },
+    type: 'warning',
+    message: 'Option {1} is experimental'
   },
   {
     pattern: {
