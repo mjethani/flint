@@ -1,0 +1,27 @@
+name: EasyPrivacy
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js 14
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm install
+
+    - name: Fetch lists
+      run: npm run fetch-lists -- --force easyprivacy.txt
+
+    - name: Run flint
+      run: node flint lists/easyprivacy.txt
