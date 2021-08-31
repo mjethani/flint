@@ -183,5 +183,8 @@ export async function main() {
   if (options.includes('--html'))
     closeHTML();
 
+  if (options.includes('--zero-errors'))
+    exitCode = 0;
+
   process.exit(exitCode);
 }

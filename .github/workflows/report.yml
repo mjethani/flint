@@ -27,7 +27,7 @@ jobs:
 
     - name: Run flint
       working-directory: lists
-      run: node ../flint --html *.txt > ../dist/report.html || true
+      run: node ../flint --html --zero-errors *.txt > ../dist/report.html
 
     - name: Publish report
       uses: peaceiris/actions-gh-pages@v3
