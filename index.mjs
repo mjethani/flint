@@ -87,7 +87,7 @@ async function flint(filename) {
   return returnCode;
 }
 
-function openHTML() {
+function openHTML({ cliOptions = [] } = {}) {
   let { version } = createRequire(import.meta.url)('./package.json');
 
   let h = ([ b, a ], r) => `${b}${r.replace(/&/g, '&amp;').replace(/</g, '&lt;')}${a}`;
@@ -111,7 +111,14 @@ function openHTML() {
   console.log('  <title>flint report</title>');
   console.log(`  <meta name="generator" content="flint v${version}">`);
   console.log('  <meta name="robots" content="noindex">');
-  console.log('  <link rel="canonical" href="https://manishjethani.io/flint/report.html">');
+
+  let canonicalURLOption = cliOptions.find(option => option.startsWith('--canonical-url='));
+  if (typeof canonicalURLOption !== 'undefined') {
+    let [ , canonicalURL ] = canonicalURLOption.split('=');
+
+    console.log(`  <link rel="canonical" href="${canonicalURL}">`);
+  }
+
   console.log(' </head>');
   console.log(' <body style="background: #232323; color: white; font-size: 150%; font-family: sans-serif; margin: 2em">');
   console.log(`  <time style="color: grey" datetime="${date.toISOString()}">${date.toUTCString()}</time>`);
@@ -184,7 +191,7 @@ export async function main() {
   let exitCode = 0;
 
   if (options.includes('--html'))
-    openHTML();
+    openHTML({ cliOptions: options });
 
   for (let filename of filenames)
     exitCode |= await flint(filename);
