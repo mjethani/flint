@@ -130,6 +130,7 @@ function closeHTML() {
   console.log('  </pre>');
   console.log(' </body>');
   console.log('</html>');
+  console.log('<!-- All your base are belong to us. -->');
 }
 
 function printVersion() {
