@@ -186,7 +186,20 @@ export default [
           'third-party', '~third-party',
           'match-case', '~match-case',
 
+          // Experimental
           'header',
+
+          // Shortcuts
+          'css', '~css',
+          'frame', '~frame',
+          'xhr', '~xhr',
+          'ehide',
+          'ghide',
+
+          'first-party', '~first-party',
+
+          '3p', '~3p',
+          '1p', '~1p',
         ];
 
         let options = extractOptions(line);
@@ -202,6 +215,36 @@ export default [
     },
     type: 'error',
     message: 'Invalid option {1}'
+  },
+  {
+    pattern: {
+      exec(line) {
+        let shortcuts = [
+          'css', '~css',
+          'frame', '~frame',
+          'xhr', '~xhr',
+          'ehide',
+          'ghide',
+
+          'first-party', '~first-party',
+
+          '3p', '~3p',
+          '1p', '~1p',
+        ];
+
+        let options = extractOptions(line);
+        if (options !== null) {
+          for (let [ name ] of options) {
+            if (shortcuts.includes(name.replace(/\s/g, '').toLowerCase()))
+              return [ line, name ];
+          }
+        }
+
+        return null;
+      }
+    },
+    type: 'error',
+    message: 'Non-standard shortcut {1}'
   },
   {
     pattern: {
