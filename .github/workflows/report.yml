@@ -30,7 +30,7 @@ jobs:
 
     - name: Run flint
       working-directory: lists
-      run: node ../flint --zero-errors --html --canonical-url=https://manishjethani.io/flint/report.html *.txt > ../dist/report.html
+      run: node ../flint --zero-errors --html --canonical-url=https://manishjethani.io/flint/report.html adblockplus/*.txt > ../dist/report.html
 
     - name: Publish report
       uses: peaceiris/actions-gh-pages@v3

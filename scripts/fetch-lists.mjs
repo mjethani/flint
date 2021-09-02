@@ -66,6 +66,7 @@ function download(url) {
   }
 
   fs.mkdirSync(directory, { recursive: true });
+  fs.mkdirSync(new URL('adblockplus', `${directory}/`), { recursive: true });
 
   let lists = process.argv.slice(2).filter(arg => !arg.startsWith('--'));
 
@@ -78,7 +79,7 @@ function download(url) {
     console.log(`Downloading ${url}`);
 
     try {
-      fs.writeFileSync(new URL(`${filename}`, `${directory}/`),
+      fs.writeFileSync(new URL(`${filename}`, `${directory}/adblockplus/`),
                        await download(url));
     } catch (error) {
       console.error(error);

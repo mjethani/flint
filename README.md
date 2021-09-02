@@ -25,7 +25,7 @@ cd flint
 npm i
 npm run fetch-lists
 ./flint --list-rules
-./flint lists/*.txt
+./flint lists/adblockplus/*.txt
 ```
 
 ### Report
