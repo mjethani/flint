@@ -20,8 +20,6 @@ import { createRequire } from 'module';
 
 import chalk from 'chalk';
 
-import rules from './rules/default.mjs';
-
 let green = chalk.green;
 let blue = chalk.blue;
 let yellow = chalk.yellow;
@@ -32,6 +30,8 @@ let bold = chalk.bold;
 let quietMode = false;
 let compactMode = false;
 let errorsOnlyMode = false;
+
+let rules = null;
 
 function formatMatch(match, filename, lineNumber, type, message) {
   filename = grey(filename);
@@ -158,6 +158,32 @@ function printRules() {
   }
 }
 
+async function loadRules(compat) {
+  if (compat === null)
+    compat = 'default';
+
+  if (![ 'default' ].includes(compat)) {
+    console.error(`Error: Unknown compatibility mode '${compat}'`);
+    console.error();
+    console.error('See --help');
+    console.error();
+
+    process.exit(1);
+  }
+
+  rules = (await import(`./rules/${compat}.mjs`)).default;
+}
+
+function getCompat(options) {
+  let compatOption = options.find(option => option.startsWith('--compat='));
+  if (typeof compatOption !== 'undefined') {
+    let [ , value ] = compatOption.split('=');
+    return value;
+  }
+
+  return null;
+}
+
 function parseArgs(args) {
   let filenames = args.filter(arg => !arg.startsWith('--'));
   let options = args.filter(arg => arg.startsWith('--'));
@@ -185,6 +211,8 @@ export async function main() {
 
   if (options.includes('--help'))
     return printHelp();
+
+  await loadRules(getCompat(options));
 
   if (options.includes('--list-rules'))
     return printRules();
