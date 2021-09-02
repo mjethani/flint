@@ -94,11 +94,6 @@ export default [
     message: 'Trailing whitespace'
   },
   {
-    pattern: /^\s*\*/,
-    type: 'off',
-    message: 'Leading asterisk'
-  },
-  {
     pattern: /^\s*[^!\s]\s*$/,
     type: 'error',
     message: 'Single-character filter'
@@ -301,23 +296,6 @@ export default [
     },
     type: 'error',
     message: 'Option {1} contains whitespace'
-  },
-  {
-    pattern: {
-      exec(line) {
-        let urlPattern = extractPattern(line);
-        if (urlPattern !== null) {
-          urlPattern = urlPattern.trim();
-
-          if (urlPattern !== '' && urlPattern.length < 3)
-            return [ line, urlPattern ];
-        }
-
-        return null;
-      }
-    },
-    type: 'off',
-    message: 'URL pattern {1} is too short'
   },
   {
     pattern: {
