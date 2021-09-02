@@ -20,7 +20,7 @@ import { createRequire } from 'module';
 
 import chalk from 'chalk';
 
-import rules from './rules.mjs';
+import rules from './rules/default.mjs';
 
 let green = chalk.green;
 let blue = chalk.blue;
