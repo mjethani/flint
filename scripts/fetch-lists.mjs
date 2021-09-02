@@ -22,7 +22,21 @@ import https from 'https';
 import { createRequire } from 'module';
 
 let require = createRequire(import.meta.url);
-let subscriptions = require('adblockpluscore/data/subscriptions.json');
+
+let lists = {
+  adblockplus: require('adblockpluscore/data/subscriptions.json').map(({ url }) => url),
+  ublockorigin: [
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters-2020.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters-2021.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/legacy.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/resource-abuse.txt',
+    'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/unbreak.txt',
+  ],
+};
 
 function read(message) {
   return new Promise(resolve => {
@@ -53,6 +67,30 @@ function download(url) {
   });
 }
 
+async function downloadLists(profile, directory) {
+  let urls = lists[profile];
+
+  fs.mkdirSync(new URL(profile, `${directory}/`), { recursive: true });
+
+  let filenames = process.argv.slice(2).filter(arg => !arg.startsWith('--'));
+
+  for (let url of urls) {
+    let filename = url.replace(/.*\/([^/]+)$/, '$1');
+
+    if (filenames.length > 0 && !filenames.includes(filename))
+      continue;
+
+    console.log(`Downloading ${url}`);
+
+    try {
+      fs.writeFileSync(new URL(`${filename}`, `${directory}/${profile}/`),
+                       await download(url));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
 (async function () {
   let directory = new URL('../lists', import.meta.url);
 
@@ -66,23 +104,7 @@ function download(url) {
   }
 
   fs.mkdirSync(directory, { recursive: true });
-  fs.mkdirSync(new URL('adblockplus', `${directory}/`), { recursive: true });
 
-  let lists = process.argv.slice(2).filter(arg => !arg.startsWith('--'));
-
-  for (let { url } of subscriptions) {
-    let filename = url.replace(/.*\/([^/]+)$/, '$1');
-
-    if (lists.length > 0 && !lists.includes(filename))
-      continue;
-
-    console.log(`Downloading ${url}`);
-
-    try {
-      fs.writeFileSync(new URL(`${filename}`, `${directory}/adblockplus/`),
-                       await download(url));
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  await downloadLists('adblockplus', directory);
+  await downloadLists('ublockorigin', directory);
 })();
