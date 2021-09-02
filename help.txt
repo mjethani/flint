@@ -1,7 +1,7 @@
 usage: flint --version
        flint --help
        flint [--no-colors] [--compact] [--errors-only] [--zero-errors]
-             [--html] [file ...]
+             [--html] [--compat=ublock] [file ...]
 
   --version
       Show version number
@@ -23,3 +23,6 @@ usage: flint --version
 
   --html
       Print HTML instead of plain text
+
+  --compat=ublock
+      Use rule set for uBlock Origin instead of the default rule set
