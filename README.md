@@ -4,6 +4,8 @@
 
 [![EasyPrivacy](https://github.com/mjethani/flint/actions/workflows/easyprivacy.yml/badge.svg)](https://github.com/mjethani/flint/actions/workflows/easyprivacy.yml)
 
+[![uBlock Origin](https://github.com/mjethani/flint/actions/workflows/ublock.yml/badge.svg)](https://github.com/mjethani/flint/actions/workflows/ublock.yml)
+
 ### Installation
 
 ```
