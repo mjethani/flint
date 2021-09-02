@@ -26,6 +26,7 @@ npm i
 npm run fetch-lists
 ./flint --list-rules
 ./flint lists/adblockplus/*.txt
+./flint --compat=ublock lists/ublock/*.txt
 ```
 
 ### Report

@@ -69,25 +69,6 @@ export default [
     message: 'Domain {1} contains whitespace'
   },
   {
-    // Domain names must be IDNA-encoded.
-    // https://en.wikipedia.org/wiki/Punycode
-    pattern: {
-      exec(line) {
-        let domains = extractDomains(line) || [];
-        for (let domain of domains) {
-          let actualDomain = domain.trim().replace(/^~/, '');
-          let [ , character ] = /([^a-z0-9.\s-])/iu.exec(actualDomain) || [];
-          if (typeof character !== 'undefined')
-            return [ line, domain, character ];
-        }
-
-        return null;
-      }
-    },
-    type: 'error',
-    message: 'Domain {1} contains non-hostname character {2}'
-  },
-  {
     pattern: {
       exec(line) {
         let validOptions = [
@@ -105,17 +86,36 @@ export default [
           'font', '~font',
 
           'popup',
-          'csp',
-          'rewrite',
-
+          'popunder',
+          'cname',
           'document',
-          'genericblock',
+          'inline-script',
+          'inline-font',
+
+          'all',
+
+          'csp',
+          'empty',
+          'mp4',
+          'redirect',
+          'redirect-rule',
+          'removeparam',
+
           'elemhide',
           'generichide',
+          'specifichide',
 
           'domain',
           'third-party', '~third-party',
           'match-case', '~match-case',
+
+          'strict3p', '~strict3p',
+          'strict1p', '~strict1p',
+
+          'denyallow',
+
+          'badfilter',
+          'important',
 
           // Experimental
           'header',
@@ -127,6 +127,7 @@ export default [
           'doc',
           'ehide',
           'ghide',
+          'shide',
 
           '3p', '~3p',
           '1p', '~1p',
@@ -147,37 +148,6 @@ export default [
     },
     type: 'error',
     message: 'Invalid option {1}'
-  },
-  {
-    pattern: {
-      exec(line) {
-        let aliases = [
-          'css', '~css',
-          'frame', '~frame',
-          'xhr', '~xhr',
-          'doc',
-          'ehide',
-          'ghide',
-
-          '3p', '~3p',
-          '1p', '~1p',
-
-          'first-party', '~first-party',
-        ];
-
-        let options = extractOptions(line);
-        if (options !== null) {
-          for (let [ name ] of options) {
-            if (aliases.includes(name.replace(/\s/g, '').toLowerCase()))
-              return [ line, name ];
-          }
-        }
-
-        return null;
-      }
-    },
-    type: 'error',
-    message: 'Non-standard alias {1}'
   },
   {
     pattern: {

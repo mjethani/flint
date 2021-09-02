@@ -162,7 +162,7 @@ async function loadRules(compat) {
   if (compat === null)
     compat = 'default';
 
-  if (![ 'default' ].includes(compat)) {
+  if (![ 'default', 'ublock' ].includes(compat)) {
     console.error(`Error: Unknown compatibility mode '${compat}'`);
     console.error();
     console.error('See --help');

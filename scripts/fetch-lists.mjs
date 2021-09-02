@@ -25,7 +25,7 @@ let require = createRequire(import.meta.url);
 
 let lists = {
   adblockplus: require('adblockpluscore/data/subscriptions.json').map(({ url }) => url),
-  ublockorigin: [
+  ublock: [
     'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt',
     'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt',
     'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters-2020.txt',
@@ -106,5 +106,5 @@ async function downloadLists(profile, directory) {
   fs.mkdirSync(directory, { recursive: true });
 
   await downloadLists('adblockplus', directory);
-  await downloadLists('ublockorigin', directory);
+  await downloadLists('ublock', directory);
 })();
