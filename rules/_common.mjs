@@ -119,6 +119,11 @@ export default [
     message: 'Extra anchor before {1}'
   },
   {
+    pattern: /^(?:\s*@\s*@)?((?:\s*\|){3,})/,
+    type: 'error',
+    message: 'One or more extra anchors in {1}'
+  },
+  {
     // If it looks like a host, it should be surrounded by anchors; otherwise,
     // the interpretation is ambiguous.
     pattern: {
