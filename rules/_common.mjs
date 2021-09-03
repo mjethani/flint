@@ -111,9 +111,18 @@ export default [
   {
     // If it looks like a host, it should be surrounded by anchors; otherwise,
     // the interpretation is ambiguous.
-    pattern: /^\s*([a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*(:\d+)?)\s*$/i,
+    pattern: {
+      exec(line) {
+        let re = /^\s*([a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*(:\d+)?)\s*$/i;
+        let urlPattern = extractPattern(line);
+        if (urlPattern !== null && re.test(urlPattern))
+          return [ line, urlPattern ];
+
+        return null;
+      }
+    },
     type: 'warning',
-    message: '{1} looks like a host'
+    message: 'URL pattern {1} looks like a host'
   },
   {
     pattern: {
