@@ -25,7 +25,7 @@ let require = createRequire(import.meta.url);
 
 let lists = {
   adblockplus: require('adblockpluscore/data/subscriptions.json')
-               .filter(({ type }) => type !== 'circumvention')
+               .filter(({ type }) => type !== 'circumvention' && type !== 'cookies')
                .map(({ url }) => url),
   ublock: [
     'https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt',
