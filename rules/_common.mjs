@@ -99,22 +99,22 @@ export default [
     message: 'Single-character filter'
   },
   {
-    pattern: /^\s*\*\s*\$/,
+    pattern: /^(?:\s*@\s*@)?\s*\*\s*\$/,
     type: 'warning',
     message: 'Redundant sole wildcard'
   },
   {
-    pattern: /^\s*\|\s*\$/,
+    pattern: /^(?:\s*@\s*@)?\s*\|\s*\$/,
     type: 'warning',
     message: 'Redundant sole anchor'
   },
   {
-    pattern: /^\s*([\w-]+:)/,
+    pattern: /^(?:\s*@\s*@)?\s*([\w-]+:)/,
     type: 'warning',
     message: '{1} looks like an unanchored protocol'
   },
   {
-    pattern: /^\s*\|\s*\|\s*([\w-]+:)\s*([^\d]|$)/,
+    pattern: /^(?:\s*@\s*@)?\s*\|\s*\|\s*([\w-]+:)\s*([^\d]|$)/,
     type: 'error',
     message: 'Extra anchor before {1}'
   },
