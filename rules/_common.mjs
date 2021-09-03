@@ -114,6 +114,11 @@ export default [
     message: '{1} looks like an unanchored protocol'
   },
   {
+    pattern: /^\s*\|\s*\|\s*([\w-]+:)\s*([^\d]|$)/,
+    type: 'error',
+    message: 'Extra anchor before {1}'
+  },
+  {
     // If it looks like a host, it should be surrounded by anchors; otherwise,
     // the interpretation is ambiguous.
     pattern: {
