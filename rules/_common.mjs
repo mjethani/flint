@@ -100,7 +100,7 @@ export default [
   },
   {
     pattern: /^(?:\s*@\s*@)?\s*\*\s*\$/,
-    type: 'warning',
+    type: 'off',
     message: 'Redundant sole wildcard'
   },
   {
