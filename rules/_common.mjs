@@ -109,6 +109,11 @@ export default [
     message: 'Redundant sole anchor'
   },
   {
+    pattern: /^\s*([\w-]+:)/,
+    type: 'warning',
+    message: '{1} looks like an unanchored protocol'
+  },
+  {
     // If it looks like a host, it should be surrounded by anchors; otherwise,
     // the interpretation is ambiguous.
     pattern: {
@@ -122,7 +127,7 @@ export default [
       }
     },
     type: 'warning',
-    message: 'URL pattern {1} looks like a host'
+    message: '{1} looks like an unanchored host'
   },
   {
     pattern: {
