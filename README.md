@@ -37,7 +37,7 @@ Every ~4 hours at [manishjethani.io/flint/report.html](https://manishjethani.io/
 
 ### Integration
 
-__GitHub Actions__: [example.yml](https://gist.github.com/mjethani/eb43063309fde1fce1b29b95304a68b0)
+__GitHub Actions__: [flint.yml](https://gist.github.com/mjethani/eb43063309fde1fce1b29b95304a68b0)
 
 ---
 
