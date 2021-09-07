@@ -24,4 +24,4 @@ jobs:
       run: npm run fetch-lists -- --force easylist.txt
 
     - name: Run flint
-      run: node flint lists/adblockplus/easylist.txt
+      run: node flint --errors-only lists/adblockplus/easylist.txt

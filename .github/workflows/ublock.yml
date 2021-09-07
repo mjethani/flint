@@ -24,4 +24,4 @@ jobs:
       run: npm run fetch-lists -- --force
 
     - name: Run flint
-      run: node flint --compat=ublock lists/ublock/*.txt
+      run: node flint --errors-only --compat=ublock lists/ublock/*.txt

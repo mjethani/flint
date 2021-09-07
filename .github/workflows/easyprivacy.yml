@@ -24,4 +24,4 @@ jobs:
       run: npm run fetch-lists -- --force easyprivacy.txt
 
     - name: Run flint
-      run: node flint lists/adblockplus/easyprivacy.txt
+      run: node flint --errors-only lists/adblockplus/easyprivacy.txt
