@@ -59,8 +59,12 @@ async function flint(filename) {
 
   let lineNumber = 1;
 
+  let effectiveRules = rules.filter(({ type }) => type === 'only');
+  if (effectiveRules.length === 0)
+    effectiveRules = rules;
+
   for (let line of content.split(/\r?\n/g)) {
-    for (let { pattern, type, message } of rules) {
+    for (let { pattern, type, message } of effectiveRules) {
       if (type === 'off' || (errorsOnlyMode && type !== 'error'))
         continue;
 
